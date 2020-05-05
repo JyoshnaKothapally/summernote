@@ -160,16 +160,16 @@ export default class ImageDialog {
       this.ui.hideDialog(this.$dialog);
       this.context.invoke('editor.restoreRange');
 
-//      if (typeof imageInfo.url === 'string') { // image url
+      if (typeof imageInfo.url === 'string') { // image url
         // If onImageLinkInsert set,
-//        if (this.options.callbacks.onImageLinkInsert) {
-//          this.context.triggerEvent('image.link.insert', imageInfo.url);
-//        } else {
+        if (this.options.callbacks.onImageLinkInsert) {
+          this.context.triggerEvent('image.link.insert', imageInfo.url);
+        } else {
           this.context.invoke('editor.insertImage', imageInfo.url);
-//        }
-//      } else { // array of files
-//        this.context.invoke('editor.insertImagesOrCallback', imageInfo.url);
-//      }
+        }
+      } else { // array of files
+        this.context.invoke('editor.insertImagesOrCallback', imageInfo.url);
+      }
     }).fail(() => {
       this.context.invoke('editor.restoreRange');
     });
