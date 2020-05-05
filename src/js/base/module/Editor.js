@@ -194,6 +194,8 @@ export default class Editor {
     this.createLink = this.wrapCommand((linkInfo) => {
       let linkUrl = linkInfo.url;
       const linkText = linkInfo.text;
+      const linkTitle = linkInfo.title;
+      const linkRel = linkInfo.rel;
       const isNewWindow = linkInfo.isNewWindow;
       const checkProtocol = linkInfo.checkProtocol;
       let rng = linkInfo.range || this.getLastRange();
@@ -231,6 +233,8 @@ export default class Editor {
 
       $.each(anchors, (idx, anchor) => {
         $(anchor).attr('href', linkUrl);
+        $(anchor).attr('title', linkTitle);
+        $(anchor).attr('rel', linkRel);
         if (isNewWindow) {
           $(anchor).attr('target', '_blank');
         } else {
@@ -851,6 +855,8 @@ export default class Editor {
       range: rng,
       text: rng.toString(),
       url: $anchor.length ? $anchor.attr('href') : '',
+      title: $anchor.length ? $anchor.attr('title') : '',
+      rel: $anchor.length ? $anchor.attr('rel') : '',
     };
 
     // When anchor exists,
@@ -860,6 +866,30 @@ export default class Editor {
     }
 
     return linkInfo;
+  }
+
+  /**
+   * returns image info
+   *
+   * @return {Object}
+   * @return {WrappedRange} return.range
+   * @return {String} return.text
+   */
+  getImageInfo() {
+    const rng = this.getLastRange().expand(dom.isImg);
+    // Get the first image on range(for edit).
+    const $image = $(lists.head(rng.nodes(dom.isImg)));
+    const imageInfo = {
+      range: rng,
+      text: rng.toString(),
+      url: $image.attr('src'),
+      title: $image.attr('title'),
+      alt: $image.attr('alt'),
+      class: $image.attr('class'),
+      caption: $image.next('figcaption').text(),
+    };
+
+    return imageInfo;
   }
 
   addRow(position) {

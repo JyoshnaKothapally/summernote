@@ -1,5 +1,14 @@
 .note-form-group {
-  padding-bottom: 20px;
+  padding-bottom: 1rem;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-bottom: 0;
 }
 
 .note-form-group:last-child {
@@ -9,10 +18,11 @@
 .note-form-label {
   display: block;
   width: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   color: #42515f;
   margin-bottom: 10px;
   font-weight: 700;
+  line-height: 1.5;
 }
 
 .note-input {

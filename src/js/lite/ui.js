@@ -13,16 +13,16 @@ const statusbar = renderer.create([
   '<output class="note-status-output" role="status" aria-live="polite"/>',
   '<div class="note-statusbar" role="status">',
     '<div class="note-resizebar" aria-label="resize">',
-      '<div class="note-icon-bar"></div>',
-      '<div class="note-icon-bar"></div>',
-      '<div class="note-icon-bar"></div>',
+      '<div class="note-icon-bar"/>',
+      '<div class="note-icon-bar"/>',
+      '<div class="note-icon-bar"/>',
     '</div>',
   '</div>',
 ].join(''));
 
 const airEditor = renderer.create('<div class="note-editor note-airframe"/>');
 const airEditable = renderer.create([
-  '<div class="note-editable" contentEditable="true" role="textbox" aria-multiline="true"></div>',
+  '<div class="note-editable" contentEditable="true" role="textbox" aria-multiline="true"/>',
   '<output class="note-status-output" role="status" aria-live="polite"/>',
 ].join(''));
 
@@ -236,9 +236,9 @@ const tableDropdownButton = function(opt) {
       className: 'note-table',
       items: [
         '<div class="note-dimension-picker">',
-          '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"></div>',
-          '<div class="note-dimension-picker-highlighted"></div>',
-          '<div class="note-dimension-picker-unhighlighted"></div>',
+          '<div class="note-dimension-picker-mousecatcher" data-event="insertTable" data-value="1x1"/>',
+          '<div class="note-dimension-picker-highlighted"/>',
+          '<div class="note-dimension-picker-unhighlighted"/>',
         '</div>',
         '<div class="note-dimension-display">1 x 1</div>',
       ].join(''),
@@ -325,7 +325,7 @@ const colorDropdownButton = function(opt, type) {
               opt.lang.color.transparent,
             '</button>',
           '</div>',
-          '<div class="note-holder" data-event="backColor"></div>',
+          '<div class="note-holder" data-event="backColor"/>',
             '<div class="btn-sm">',
               '<input type="color" id="html5bcp" class="note-btn btn-default" value="#21104A" style="width:100%;" data-value="cp">',
               '<button type="button" class="note-color-reset btn" data-event="backColor" data-value="cpbackColor">',
@@ -340,7 +340,7 @@ const colorDropdownButton = function(opt, type) {
                 opt.lang.color.resetToDefault,
               '</button>',
             '</div>',
-            '<div class="note-holder" data-event="foreColor"></div>',
+            '<div class="note-holder" data-event="foreColor"/>',
               '<div class="btn-sm">',
                 '<input type="color" id="html5fcp" class="note-btn btn-default" value="#21104A" style="width:100%;" data-value="cp">',
                 '<button type="button" class="note-color-reset btn" data-event="foreColor" data-value="cpforeColor">',
@@ -422,16 +422,6 @@ const dialog = renderer.create('<div class="note-modal" aria-hidden="false" tabi
 });
 
 const videoDialog = function(opt) {
-  const body = '<div class="note-form-group">' +
-    '<label for="note-dialog-video-url-' + opt.id + '" class="note-form-label">' + opt.lang.video.url + ' <small class="text-muted">' + opt.lang.video.providers + '</small></label>' +
-    '<input id="note-dialog-video-url-' + opt.id + '" class="note-video-url note-input" type="text"/>' +
-  '</div>';
-  const footer = [
-    '<button type="button" href="#" class="note-btn note-btn-primary note-video-btn disabled" disabled>',
-      opt.lang.video.insert,
-    '</button>',
-  ].join('');
-
   return dialog({
     title: opt.lang.video.insert,
     fade: opt.fade,
@@ -441,21 +431,6 @@ const videoDialog = function(opt) {
 };
 
 const imageDialog = function(opt) {
-  const body = '<div class="note-form-group note-group-select-from-files">' +
-    '<label for="note-dialog-image-file-' + opt.id + '" class="note-form-label">' + opt.lang.image.selectFromFiles + '</label>' +
-    '<input id="note-dialog-image-file-' + opt.id + '" class="note-note-image-input note-input" type="file" name="files" accept="image/*" multiple="multiple"/>' +
-    opt.imageLimitation +
-  '</div>' +
-  '<div class="note-form-group">' +
-    '<label for="note-dialog-image-url-' + opt.id + '" class="note-form-label">' + opt.lang.image.url + '</label>' +
-    '<input id="note-dialog-image-url-' + opt.id + '" class="note-image-url note-input" type="text"/>' +
-  '</div>';
-  const footer = [
-    '<button href="#" type="button" class="note-btn note-btn-primary note-btn-large note-image-btn disabled" disabled>',
-      opt.lang.image.insert,
-    '</button>',
-  ].join('');
-
   return dialog({
     title: opt.lang.image.insert,
     fade: opt.fade,
@@ -465,22 +440,6 @@ const imageDialog = function(opt) {
 };
 
 const linkDialog = function(opt) {
-  const body = '<div class="note-form-group">' +
-    '<label for="note-dialog-link-txt-' + opt.id + '" class="note-form-label">' + opt.lang.link.textToDisplay + '</label>' +
-    '<input id="note-dialog-link-txt-' + opt.id + '" class="note-link-text note-input" type="text"/>' +
-  '</div>' +
-  '<div class="note-form-group">' +
-    '<label for="note-dialog-link-url-' + opt.id + '" class="note-form-label">' + opt.lang.link.url + '</label>' +
-    '<input id="note-dialog-link-url-' + opt.id + '" class="note-link-url note-input" type="text" value="http://"/>' +
-  '</div>' +
-  (!opt.disableLinkTarget ? '<div class="checkbox"><label for="note-dialog-link-nw-' + opt.id + '"><input id="note-dialog-link-nw-' + opt.id + '" type="checkbox" checked> ' + opt.lang.link.openInNewWindow + '</label></div>' : '') +
-  '<div class="checkbox"><label for="note-dialog-link-up-' + opt.id + '"><input id="note-dialog-link-up-' + opt.id + '" type="checkbox" checked> ' + opt.lang.link.useProtocol + '</label></div>';
-  const footer = [
-    '<button href="#" type="button" class="note-btn note-btn-primary note-link-btn disabled" disabled>',
-      opt.lang.link.insert,
-    '</button>',
-  ].join('');
-
   return dialog({
     className: 'link-dialog',
     title: opt.lang.link.insert,
@@ -492,8 +451,8 @@ const linkDialog = function(opt) {
 
 const popover = renderer.create([
   '<div class="note-popover bottom">',
-    '<div class="note-popover-arrow"></div>',
-    '<div class="popover-content note-children-container"></div>',
+    '<div class="note-popover-arrow"/>',
+    '<div class="popover-content note-children-container"/>',
   '</div>',
 ].join(''), function($node, options) {
   const direction = typeof options.direction !== 'undefined' ? options.direction : 'bottom';
