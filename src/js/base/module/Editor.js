@@ -882,12 +882,12 @@ export default class Editor {
     const imageInfo = {
       range: rng,
       text: rng.toString(),
-      url: $image.attr('src'),
-      title: $image.attr('title'),
-      alt: $image.attr('alt'),
-      class: $image.attr('class'),
-      caption: $image.next('figcaption').text(),
-    };
+      url: $image.length ? $image.attr('src') : '',
+      title: $image.length ? $image.attr('title') : '',
+      alt: $image.length ? $image.attr('alt') : '',
+      class: $image.length ? $image.attr('class') : '',
+      caption: $image.next('figcaption').length ? $image.next('figcaption').text() : '',
+    }
 
     return imageInfo;
   }
