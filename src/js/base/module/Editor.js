@@ -258,6 +258,60 @@ export default class Editor {
     });
 
     /**
+     * insert image
+     *
+     * @param {String} src
+     * @param {String|Function} param
+     * @return {Promise}
+     */
+
+     this.insertImage = this.wrapCommand((imageInfo) => {
+       let imageSrc = imageInfo.input != '' ? imageInfo.input : imageInfo.src;
+       const imageTitle = imageInfo.title;
+       const imageAlt = imageInfo.alt;
+       const imageClass = imageInfo.class;
+       const imageCaption = imageInfo.caption;
+       let rng = imageInfo.range || this.getLastRange();
+
+       // handle spaced urls from input
+       if (typeof imageSrc === 'string') {
+         imageSrc = imageSrc.trim();
+       }
+
+       let images = [];
+       images = this.style.styleNodes(rng, {
+         nodeName: 'IMG',
+         expandClosestSibling: true,
+         onlyPartialContains: true,
+       });
+
+       $.each(images, (idx, image) => {
+         $(image).attr('src', imageSrc);
+         $(image).attr('title', imageTitle);
+         $(image).attr('class', imageClass);
+         $(image).attr('alt', imageAlt);
+         if (imageCaption) {
+           $(image).wrap('<figure/>').after('<figcaption/>').parent();
+           $(image).next('figcaption').html(imageCaption);
+         }
+       });
+
+       const startRange = range.createFromNodeBefore(lists.head(images));
+       const startPoint = startRange.getStartPoint();
+       const endRange = range.createFromNodeAfter(lists.last(images));
+       const endPoint = endRange.getEndPoint();
+
+       this.setLastRange(
+         range.create(
+           startPoint.node,
+           startPoint.offset,
+           endPoint.node,
+           endPoint.offset
+         ).select()
+       );
+     });
+
+    /**
      * setting color
      *
      * @param {Object} sObjColor  color code
@@ -688,13 +742,8 @@ export default class Editor {
     };
   }
 
-  /**
-   * insert image
-   *
-   * @param {String} src
-   * @param {String|Function} param
-   * @return {Promise}
-   */
+
+/*
   insertImage(src, param) {
     return createImage(src, param).then(($image) => {
       this.beforeCommand();
@@ -716,6 +765,7 @@ export default class Editor {
       this.context.triggerEvent('image.upload.error', e);
     });
   }
+*/
 
   /**
    * insertImages
@@ -882,6 +932,7 @@ export default class Editor {
     const imageInfo = {
       range: rng,
       text: rng.toString(),
+      input: $image.length ? $image.attr('src') : '',
       url: $image.length ? $image.attr('src') : '',
       title: $image.length ? $image.attr('title') : '',
       alt: $image.length ? $image.attr('alt') : '',

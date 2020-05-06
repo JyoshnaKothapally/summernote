@@ -1,5 +1,3 @@
-/* https://github.com/adeelhussain/summernote-image-attribute-editor/blob/master/summernote-image-attributes.js */
-
 import $ from 'jquery';
 import env from '../core/env';
 import key from '../core/key';
@@ -87,7 +85,7 @@ export default class ImageDialog {
   showImageDialog(imageInfo) {
     return $.Deferred((deferred) => {
       const $imageInput = this.$dialog.find('.note-image-input');
-      const $imageUrl = this.$dialog.find('.note-image-url');
+      const $imageSrc = this.$dialog.find('.note-image-url');
       const $imageTitle = this.$dialog.find('.note-image-title');
       const $imageAlt = this.$dialog.find('.note-image-alt');
       const $imageCaption = this.$dialog.find('.note-image-caption');
@@ -102,12 +100,12 @@ export default class ImageDialog {
           deferred.resolve(event.target.files || event.target.value);
         }).val(''));
 
-        $imageUrl.on('input paste propertychange', () => {
-          this.ui.toggleBtn($imageBtn, $imageUrl.val());
+        $imageSrc.on('input paste propertychange', () => {
+          this.ui.toggleBtn($imageBtn, $imageSrc.val());
         }).val('');
 
         if (!env.isSupportTouch) {
-          $imageUrl.trigger('focus');
+          $imageSrc.trigger('focus');
         }
 
         $imageTitle.val(imageInfo.title);
@@ -123,7 +121,8 @@ export default class ImageDialog {
 
           deferred.resolve({
             range: imageInfo.range,
-            src: $imageUrl.val(),
+            input: $imageInput.val(),
+            src: $imageSrc.val(),
             title: $imageTitle.val(),
             alt: $imageAlt.val(),
             caption: $imageCaption.val(),
@@ -136,7 +135,7 @@ export default class ImageDialog {
 
       this.ui.onDialogHidden(this.$dialog, () => {
         $imageInput.off();
-        $imageUrl.off();
+        $imageSrc.off();
         $imageBtn.off();
 
         if (deferred.state() === 'pending') {
@@ -145,7 +144,7 @@ export default class ImageDialog {
       });
 
       this.ui.showDialog(this.$dialog);
-    });
+    }).promise();
   }
 
   /**
@@ -160,16 +159,16 @@ export default class ImageDialog {
       this.ui.hideDialog(this.$dialog);
       this.context.invoke('editor.restoreRange');
 
-      if (typeof imageInfo.url === 'string') { // image url
+//      if (typeof imageInfo.src === 'string') { // image url
         // If onImageLinkInsert set,
-        if (this.options.callbacks.onImageLinkInsert) {
-          this.context.triggerEvent('image.link.insert', imageInfo.url);
-        } else {
-          this.context.invoke('editor.insertImage', imageInfo.url);
-        }
-      } else { // array of files
-        this.context.invoke('editor.insertImagesOrCallback', imageInfo.url);
-      }
+//        if (this.options.callbacks.onImageLinkInsert) {
+//          this.context.triggerEvent('image.link.insert', imageInfo);
+//        } else {
+          this.context.invoke('editor.insertImage', imageInfo);
+//        }
+//      } else { // array of files
+//        this.context.invoke('editor.insertImagesOrCallback', imageInfo);
+//      }
     }).fail(() => {
       this.context.invoke('editor.restoreRange');
     });
